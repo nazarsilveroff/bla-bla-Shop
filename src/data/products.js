@@ -3,7 +3,7 @@ const products = [
     id: 'fgjhjlfsd',
     name: "BMW",
     model: "X5",
-    colors: ["red", "green", "blue", "black"],
+    colors: ["red", "green", "blue"],
     price: 10000,
 
   },
@@ -11,7 +11,7 @@ const products = [
     id: 'jkhjbgfnghnuqdnmj',
     name: "Nissan",
     model: "Rog",
-    colors: ["gray", "green", "blue", "black"],
+    colors: ["gray", "green", "blue",],
     price: 4000,
 
   },

@@ -1,8 +1,10 @@
 import React from "react";
+import { HeaderConteiner } from "./HeaderStyle";
+
 
 const Header = () => {
     return (
-        <header>
+        <HeaderConteiner>
             <a href="/">Shop Car</a>
             <nav>
                 <ul className="list">
@@ -23,7 +25,7 @@ const Header = () => {
                     </li>
                 </ul>
             </nav>
-        </header>
+        </HeaderConteiner>
     );
 };
 

@@ -1,14 +1,24 @@
 import React from "react";
+import PropTypes from 'prop-types'
 import ProductsListItem from "./productsListItem/ProductsListItem";
+import { ProductsListConteiner } from "./ProductsListStyle";
 
 const ProductsList = ({ products }) => {
   return (
-    <ul className="productsList">
+    <ProductsListConteiner className="productsList">
       {products.map((product) => (
         <ProductsListItem product={product} key={product.id} />
       ))}
-    </ul>
+    </ProductsListConteiner>
   );
 };
 
 export default ProductsList;
+
+
+
+ProductsList.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.object
+  )
+}
