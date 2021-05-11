@@ -2,10 +2,9 @@ import React, { Component } from "react";
 
 class ProductsForm extends Component {
   state = {
-    id: "",
     name: "",
     model: "",
-    colors: [],
+    colors: ['grey'],
     price: "",
   };
 
@@ -13,10 +12,9 @@ class ProductsForm extends Component {
     e.preventDefault();
     this.props.addCar(this.state);
     this.setState({
-      id: "",
       name: "",
       model: "",
-      colors: [],
+      colors: ['grey'],
       price: "",
     });
   };
@@ -35,6 +33,15 @@ class ProductsForm extends Component {
             type="text"
             onChange={this.onHandleChange}
             value={this.state.name}
+          />
+        </label>
+        <label>
+          Model:
+          <input
+            name="model"
+            type="text"
+            onChange={this.onHandleChange}
+            value={this.state.model}
           />
         </label>
         <label>

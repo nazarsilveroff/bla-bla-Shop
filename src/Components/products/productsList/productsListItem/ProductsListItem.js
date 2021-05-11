@@ -3,9 +3,13 @@ import {
   ColorsListItemContainer,
   ProductsListItemConteiner,
 } from "./ProductsListItemStyle";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
-const ProductsListItem = ({ product }) => {
+const ProductsListItem = ({ product, deleteCar }) => {
+  const onHandleDelete = () => {
+    deleteCar(product.id);
+  };
+
   return (
     <ProductsListItemConteiner>
       <div className="card">
@@ -14,7 +18,7 @@ const ProductsListItem = ({ product }) => {
         <div>
           Colors:
           <ul className="colorList">
-            {product.colors.map((color) => (
+            {product.colors?.map((color) => (
               <ColorsListItemContainer
                 key={color}
                 color={color}
@@ -23,6 +27,9 @@ const ProductsListItem = ({ product }) => {
           </ul>
         </div>
         <p>Price: {product.price}</p>
+        <button type="button" onClick={onHandleDelete}>
+          delete
+        </button>
       </div>
     </ProductsListItemConteiner>
   );
@@ -34,9 +41,7 @@ ProductsListItem.propTypes = {
   product: PropTypes.shape({
     name: PropTypes.string.isRequired,
     model: PropTypes.string.isRequired,
-    colors: PropTypes.arrayOf(
-      PropTypes.string
-    ).isRequired,
-    price: PropTypes.number
-  }).isRequired
-}
+    colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+    price: PropTypes.string,
+  }).isRequired,
+};

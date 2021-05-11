@@ -1,30 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { HeaderConteiner } from "./HeaderStyle";
+import Navigation from "./navigation/Navigation";
 
 
 const Header = () => {
     return (
         <HeaderConteiner>
-            <a href="/">Shop Car</a>
-            <nav>
-                <ul className="list">
-                    <li className="listItem">
-                        <a href="/" className="link">Home</a>
-                    </li>
-                    <li className="listItem">
-                        <a href="/Products" className="link">Products</a>
-                    </li>
-                    <li className="listItem">
-                        <a href="/Admin" className="link">Admin</a>
-                    </li>
-                    <li className="listItem">
-                        <a href="/Registation" className="link">Registation</a>
-                    </li>
-                    <li className="listItem">
-                        <a href="/Login" className="link">Login</a>
-                    </li>
-                </ul>
-            </nav>
+            <Link to="/">Shop Car</Link>
+            <Navigation />
         </HeaderConteiner>
     );
 };

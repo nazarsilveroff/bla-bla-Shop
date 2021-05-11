@@ -1,20 +1,21 @@
 import React from "react";
-import Clients from "../clients/Clients";
-// import Products from "../products/Products";
-// import data from '../../data';
-// import ClientList from '../clients/ClientList';
-// import ProductsList from '../products/ProductsList';
+import { Route, Switch } from "react-router-dom";
+import mainRoutes from "../../routes/mainRoutes";
+
 
 const Main = () => {
   return (
     <main>
-      {/* <Products /> */}
-      {/* <ProductsList products={data.products} />
-            <ClientList clients={data.clients} /> */}
-      <h2>Clients</h2>
-      <Clients />
+      <Switch>
+        {mainRoutes.map(item => (
+          <Route path={item.path} exact={item.exact} component={item.component} key={item.path} />
+        ))}
+      </Switch>
     </main>
   );
 };
 
 export default Main;
+
+
+
