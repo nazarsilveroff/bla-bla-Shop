@@ -1,3 +1,7 @@
+export const getAllProducts = (products) => {
+  return { type: "getProducts", payload: products };
+};
+
 export const addProduct = (car) => {
   console.log(car);
   return {

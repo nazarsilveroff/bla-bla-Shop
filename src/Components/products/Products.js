@@ -1,13 +1,15 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { addProduct, deleteProduct } from "../../redux/products/productsAction";
+import {
+  addProduct,
+  deleteProduct,
+  getAllProducts,
+} from "../../redux/products/productsAction";
 import ProductsForm from "./productsForm/ProductsForm";
 import ProductsList from "./productsList/ProductsList";
 import { connect } from "react-redux";
 
 class Products extends Component {
-  state = { autoCars: [] };
-
   async componentDidMount() {
     try {
       const response = await axios.get(
@@ -19,38 +21,25 @@ class Products extends Component {
           ...response.data[key],
           id: key,
         }));
-
-        this.setState({ autoCars: cars });
+        this.props.getAllProducts(cars);
+        // this.setState({ autoCars: cars });
       } else return;
     } catch (error) {}
   }
 
   addCar = async (car) => {
-    try {
-      // const respons = await axios.post(
-      //   `https://shop-a2177-default-rtdb.firebaseio.com/cars.json`,
-      //   car
-      // );
-
-      this.props.addProduct({ ...car, id: "ggg" });
-      // this.setState((prevState) => {
-      //   return {
-      //     autoCars: [...prevState.autoCars, { ...car, id: respons.data.name }],
-      //   };
-      // });
-    } catch (error) {}
+    const respons = await axios.post(
+      `https://shop-a2177-default-rtdb.firebaseio.com/cars.json`,
+      car
+    );
+    this.props.addProduct({ ...car, id: respons.data.name });
   };
 
   deleteCar = async (id) => {
-    try {
-      await axios.delete(
-        `https://shop-a2177-default-rtdb.firebaseio.com/cars/${id}.json`
-      );
-      this.props.deleteProduct(id);
-      // this.setState({
-      //   autoCars: this.state.autoCars.filter((car) => car.id !== id),
-      // });
-    } catch (error) {}
+    await axios.delete(
+      `https://shop-a2177-default-rtdb.firebaseio.com/cars/${id}.json`
+    );
+    this.props.deleteProduct(id);
   };
 
   render() {
@@ -59,7 +48,7 @@ class Products extends Component {
         <h2>Продукты</h2>
         <ProductsForm addCar={this.addCar} />
         <ProductsList
-          products={this.state.autoCars}
+          products={this.props.products}
           deleteCar={this.deleteCar}
         />
       </>
@@ -67,12 +56,10 @@ class Products extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    addProduct: (car) => {
-      dispatch(addProduct(car));
-    },
-  };
-};
+const mstp = (state) => ({
+  products: state.products,
+});
 
-export default connect(null, mapDispatchToProps)(Products);
+export default connect(mstp, { addProduct, deleteProduct, getAllProducts })(
+  Products
+);

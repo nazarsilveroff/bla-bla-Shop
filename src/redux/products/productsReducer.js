@@ -1,11 +1,11 @@
 const productsReducer = (state = [], action) => {
   switch (action.type) {
     case "addProduct":
-      return [...state.products, action.payload];
+      return [...state, action.payload];
     case "deleteProduct":
-      return [
-        ...state.products.filter((product) => product.id !== action.payload),
-      ];
+      return [...state.filter((product) => product.id !== action.payload)];
+    case "getProducts":
+      return action.payload;
 
     default:
       return state;
