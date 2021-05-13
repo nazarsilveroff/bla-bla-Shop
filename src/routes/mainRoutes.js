@@ -1,38 +1,40 @@
-import AdminPage from "../pages/AdminPage"
-import AuthPage from "../pages/AuthPage"
-import HomePage from "../pages/HomePage"
-import ProductsPage from "../pages/ProductsPage"
+import { lazy } from "react";
 
-const mainRoutes = [{
-    name: 'Home',
-    path: '/',
+const mainRoutes = [
+  {
+    name: "Home",
+    path: "/",
     exact: true,
-    component: HomePage
-},
-{
-    name: 'Products',
-    path: '/Products',
-    exact: true,
-    component: ProductsPage
-},
-{
-    name: 'Admin',
-    path: '/Admin',
+    component: lazy(() =>
+      import("../pages/HomePage" /*webpackChunkName:'HomePage'*/)
+    ),
+  },
+  {
+    name: "Products",
+    path: "/Products",
     exact: false,
-    component: AdminPage
-},
-{
-    name: 'Registation',
-    path: '/Registation',
+    component: lazy(() =>
+      import("../pages/ProductsPage" /*webpackChunkName:'ProductsPage'*/)
+    ),
+  },
+  {
+    name: "Admin",
+    path: "/Admin",
+    exact: false,
+    component: lazy(() => import("../pages/AdminPage")),
+  },
+  {
+    name: "Registation",
+    path: "/Registation",
     exact: true,
-    component: AuthPage
-},
-{
-    name: 'Login',
-    path: '/Login',
+    component: lazy(() => import("../pages/AuthPage")),
+  },
+  {
+    name: "Login",
+    path: "/Login",
     exact: true,
-    component: AuthPage
-},
-]
+    component: lazy(() => import("../pages/AuthPage")),
+  },
+];
 
-export default mainRoutes
+export default mainRoutes;

@@ -1,47 +1,42 @@
 import { exact } from "prop-types";
-import React from "react";
+import React, { Suspense } from "react";
 
 import { NavLink, Switch, Route } from "react-router-dom";
-import Clients from "../Components/clients/Clients";
-import Products from "../Components/products/Products";
+import adminRoutes from "../routes/adminRoutes";
 
-const adminRoutes = [
-  {
-    name: "Products",
-    path: "/products",
-    exact: true,
-    component: Products,
-  },
-  {
-    name: "Clients",
-    path: "/clients",
-    exact: true,
-    component: Clients,
-  },
-];
+const AdminPage = ({ match, location, history }) => {
+  const onHandleClick = () => {
+    if (location.state?.from) {
+      history.push(location.state.from);
+    }
+  };
 
-const AdminPage = ({ match }) => {
   return (
     <>
       <h2>Admin</h2>
+      <button type="button" onClick={onHandleClick}>
+        BACK
+      </button>
       <nav>
         <ul>
           {adminRoutes.map((item) => (
             <li key={item.path}>
-              <NavLink to={match.url + item.path}>{item.name}</NavLink>
+              <NavLink to={match.path + item.path}>{item.name}</NavLink>
             </li>
           ))}
         </ul>
       </nav>
-      <Switch>
-        {adminRoutes.map((item) => (
-          <Route
-            path={match.url + item.path}
-            component={item.component}
-            key={item.path}
-          />
-        ))}
-      </Switch>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <Switch>
+          {adminRoutes.map((item) => (
+            <Route
+              path={match.url + item.path}
+              component={item.component}
+              key={item.path}
+            />
+          ))}
+        </Switch>
+      </Suspense>
     </>
   );
 };
