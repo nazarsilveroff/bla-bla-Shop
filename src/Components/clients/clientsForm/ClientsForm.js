@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { resetError } from "../../../redux/clients/clientsAction";
+import { errorClientsSelektor } from "../../../redux/clients/clientsSelectors";
 
 class ClientsForm extends Component {
   state = {
@@ -16,6 +19,7 @@ class ClientsForm extends Component {
   };
 
   onHandleChange = (e) => {
+    this.props.error && this.props.resetError();
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
@@ -45,4 +49,9 @@ class ClientsForm extends Component {
   }
 }
 
-export default ClientsForm;
+const mapStateToProps = (state) => {
+  return {
+    error: errorClientsSelektor(state),
+  };
+};
+export default connect(mapStateToProps, { resetError })(ClientsForm);

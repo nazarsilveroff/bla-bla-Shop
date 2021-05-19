@@ -1,57 +1,53 @@
 import React, { Component, Fragment } from "react";
 import ClientsForm from "./clientsForm/ClientsForm";
 import ClientList from "./clientsList/ClientList";
-import { v4 as uuidv4 } from "uuid";
 import ClientsFilter from "./clientsFilter/ClientsFilter";
-import axios from "axios";
+import { connect } from "react-redux";
+import {
+  addClientOperation,
+  deleteClientOperation,
+  getAllClientsOperation,
+} from "../../redux/clients/clientsOperations";
+import {
+  errorClientsSelektor,
+  getClientsSelector,
+  loaderClientsSelector,
+} from "../../redux/clients/clientsSelectors";
 
 class Clients extends Component {
   state = {
-    clients: [],
     filter: "",
   };
 
   async componentDidMount() {
-    try {
-      const { data } = await axios.get(
-        `https://shop-a2177-default-rtdb.firebaseio.com/clients.json`
-      );
-      if (data) {
-        const clients = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        this.setState({ clients });
-      }
-      // console.log(data);
-    } catch (error) {}
+    this.props.getAllClientsOperation();
+    // try {
+    //     this.setState({ clients });
+    //   }
+    //   // console.log(data);
+    // } catch (error) {}
   }
 
   addClient = async (client) => {
-    try {
-      const { data } = await axios.post(
-        `https://shop-a2177-default-rtdb.firebaseio.com/clients.json`,
-        client
-      );
-      console.log(data);
-      this.setState((prev) => {
-        return {
-          clients: [...prev.clients, { ...client, id: uuidv4() }],
-        };
-      });
-    } catch (error) {}
+    this.props.addClientOperation(client);
+    // try {
+    //   console.log(data);
+    //   this.setState((prev) => {
+    //     return {
+    //       clients: [...prev.clients, { ...client, id: uuidv4() }],
+    //     };
+    //   });
+    // } catch (error) {}
   };
 
   deleteClient = async (e) => {
-    try {
-      const { id } = e.target;
-      await axios.delete(
-        `https://shop-a2177-default-rtdb.firebaseio.com/clients/${id}.json`
-      );
-      this.setState({
-        clients: this.state.clients.filter((client) => client.id !== id),
-      });
-    } catch (error) {}
+    const { id } = e.target;
+    this.props.deleteClientOperation(id);
+    // try {
+    //   this.setState({
+    //     clients: this.state.clients.filter((client) => client.id !== id),
+    //   });
+    // } catch (error) {}
   };
 
   setFilter = (e) => {
@@ -62,7 +58,7 @@ class Clients extends Component {
   };
 
   getFilterClients = () => {
-    return this.state.clients.filter((client) =>
+    return this.props.clients.filter((client) =>
       client.clientName.toLowerCase().includes(this.state.filter.toLowerCase())
     );
   };
@@ -70,6 +66,8 @@ class Clients extends Component {
   render() {
     return (
       <>
+        {this.props.error && <h2>{this.props.error}</h2>}
+        {this.props.isLoading && <h2>Loading</h2>}
         <ClientsForm addClient={this.addClient} />
         <ClientsFilter filter={this.state.filter} setFilter={this.setFilter} />
         <ClientList
@@ -80,4 +78,16 @@ class Clients extends Component {
     );
   }
 }
-export default Clients;
+
+const mapStateToProps = (state) => ({
+  clients: getClientsSelector(state),
+  isLoading: loaderClientsSelector(state),
+  error: errorClientsSelektor(state),
+});
+
+const mapDispatchToProps = {
+  getAllClientsOperation,
+  addClientOperation,
+  deleteClientOperation,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Clients);

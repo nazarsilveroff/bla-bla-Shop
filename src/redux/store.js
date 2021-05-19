@@ -1,13 +1,16 @@
-import { createStore, combineReducers } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { combineReducers } from "redux";
 import clientsReducer from "./clients/clientsReducer";
 import productsReducer from "./products/productsReducer";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
   products: productsReducer,
   clients: clientsReducer,
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: [...getDefaultMiddleware()],
+});
 
 export default store;
