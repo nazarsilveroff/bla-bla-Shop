@@ -1,28 +1,50 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { addProduct, deleteProduct, getAllProducts } from "./productsAction";
+import { combineReducers, createReducer } from "@reduxjs/toolkit";
+import { logOut } from "../auth/authActions";
+import {
+  getAllProductsSuccess,
+  addProductSuccess,
+  deleteProductSuccess,
+  getAllProductsRequest,
+  addProductRequest,
+  deleteProductRequest,
+  getAllProductsError,
+  addProductError,
+  deleteProductError,
+} from "../../redux/products/productsAction";
 
-const productsReducer = createReducer([], {
-  [getAllProducts]: (_, { payload }) => payload,
-  [addProduct]: (state, { payload }) => [...state, payload],
-  [deleteProduct]: (state, { payload }) => [
+export const itemsReducer = createReducer([], {
+  [getAllProductsSuccess]: (_, { payload }) => payload,
+  [addProductSuccess]: (state, { payload }) => [...state, payload],
+  [deleteProductSuccess]: (state, { payload }) => [
     ...state.filter((product) => product.id !== payload),
   ],
+  [logOut]: () => ({}),
 });
 
-export default productsReducer;
+export const loaderReducer = createReducer(false, {
+  [getAllProductsRequest]: (state) => !state,
+  [addProductRequest]: (state) => !state,
+  [deleteProductRequest]: (state) => !state,
 
-// const productsReducer = (state = [], action) => {
-//   switch (action.type) {
-//     case "addProduct":
-//       return [...state, action.payload];
-//     case "deleteProduct":
-//       return [...state.filter((product) => product.id !== action.payload)];
-//     case "getProducts":
-//       return action.payload;
+  [getAllProductsError]: (state) => !state,
+  [addProductError]: (state) => !state,
+  [deleteProductError]: (state) => !state,
 
-//     default:
-//       return state;
-//   }
-// };
+  [getAllProductsSuccess]: (state) => !state,
+  [addProductSuccess]: (state) => !state,
+  [deleteProductSuccess]: (state) => !state,
+  [logOut]: () => false,
+});
 
-// export default productsReducer;
+export const erorReducer = createReducer("", {
+  [getAllProductsError]: (_, { payload }) => payload,
+  [addProductError]: (_, { payload }) => payload,
+  [deleteProductError]: (_, { payload }) => payload,
+  [logOut]: () => "",
+});
+
+export const productsReducer = combineReducers({
+  items: itemsReducer,
+  isloader: loaderReducer,
+  error: erorReducer,
+});

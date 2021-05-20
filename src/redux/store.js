@@ -1,11 +1,13 @@
 import { combineReducers } from "redux";
 import clientsReducer from "./clients/clientsReducer";
-import productsReducer from "./products/productsReducer";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { authReducers } from "./auth/authReducers";
+import { productsReducer } from "./products/productsReducer";
 
 const rootReducer = combineReducers({
   products: productsReducer,
   clients: clientsReducer,
+  auth: authReducers,
 });
 
 const store = configureStore({

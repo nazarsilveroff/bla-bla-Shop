@@ -1,45 +1,24 @@
-import axios from "axios";
 import React, { Component } from "react";
-import {
-  addProduct,
-  deleteProduct,
-  getAllProducts,
-} from "../../redux/products/productsAction";
 import ProductsForm from "./productsForm/ProductsForm";
 import ProductsList from "./productsList/ProductsList";
 import { connect } from "react-redux";
-
+import {
+  deleteProductsOperations,
+  getAllProductsOperations,
+  getProductsOperations,
+} from "../../redux/products/productOperations";
+import { getAllProductsSelector } from "../../redux/products/productSelectors";
 class Products extends Component {
   async componentDidMount() {
-    try {
-      const response = await axios.get(
-        `https://shop-a2177-default-rtdb.firebaseio.com/cars.json`
-      );
-
-      if (response.data) {
-        const cars = Object.keys(response.data).map((key) => ({
-          ...response.data[key],
-          id: key,
-        }));
-        this.props.getAllProducts(cars);
-        // this.setState({ autoCars: cars });
-      } else return;
-    } catch (error) {}
+    this.props.getAllProductsOperations();
   }
 
   addCar = async (car) => {
-    const respons = await axios.post(
-      `https://shop-a2177-default-rtdb.firebaseio.com/cars.json`,
-      car
-    );
-    this.props.addProduct({ ...car, id: respons.data.name });
+    this.props.getProductsOperations(car);
   };
 
   deleteCar = async (id) => {
-    await axios.delete(
-      `https://shop-a2177-default-rtdb.firebaseio.com/cars/${id}.json`
-    );
-    this.props.deleteProduct(id);
+    this.props.deleteProductsOperations(id);
   };
 
   render() {
@@ -56,10 +35,13 @@ class Products extends Component {
   }
 }
 
-const mstp = (state) => ({
-  products: state.products,
+const mapState = (state) => ({
+  products: getAllProductsSelector(state),
 });
 
-export default connect(mstp, { addProduct, deleteProduct, getAllProducts })(
-  Products
-);
+const mapDispatch = {
+  getAllProductsOperations,
+  getProductsOperations,
+  deleteProductsOperations,
+};
+export default connect(mapState, mapDispatch)(Products);

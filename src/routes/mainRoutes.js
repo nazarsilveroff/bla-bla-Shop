@@ -2,7 +2,7 @@ import { lazy } from "react";
 
 const mainRoutes = [
   {
-    name: "Home",
+    name: "home",
     path: "/",
     exact: true,
     component: lazy(() =>
@@ -10,28 +10,28 @@ const mainRoutes = [
     ),
   },
   {
-    name: "Products",
-    path: "/Products",
+    name: "products",
+    path: "/products",
     exact: false,
     component: lazy(() =>
       import("../pages/ProductsPage" /*webpackChunkName:'ProductsPage'*/)
     ),
   },
   {
-    name: "Admin",
-    path: "/Admin",
+    name: "admin",
+    path: "/admin",
     exact: false,
     component: lazy(() => import("../pages/AdminPage")),
   },
   {
-    name: "Registation",
-    path: "/Registation",
+    name: "registration",
+    path: "/registration",
     exact: true,
     component: lazy(() => import("../pages/AuthPage")),
   },
   {
-    name: "Login",
-    path: "/Login",
+    name: "login",
+    path: "/login",
     exact: true,
     component: lazy(() => import("../pages/AuthPage")),
   },

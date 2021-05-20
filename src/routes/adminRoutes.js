@@ -2,7 +2,7 @@ import { lazy } from "react";
 
 const adminRoutes = [
   {
-    name: "Products",
+    name: "products",
     path: "/products",
     exact: true,
     component: lazy(() =>
@@ -10,7 +10,7 @@ const adminRoutes = [
     ),
   },
   {
-    name: "Clients",
+    name: "clients",
     path: "/clients",
     exact: true,
     component: lazy(() =>
